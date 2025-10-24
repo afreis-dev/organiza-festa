@@ -59,3 +59,8 @@ def salvar_eventos(lista_de_eventos):
         indice = indice + 1
 
     arquivo.close()
+
+def main():
+    # garantir que o arquivo de eventos exista
+    garantir_arquivo_eventos()
+    eventos = carregar_eventos()
