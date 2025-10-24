@@ -64,3 +64,5 @@ def main():
     # garantir que o arquivo de eventos exista
     garantir_arquivo_eventos()
     eventos = carregar_eventos()
+
+main()
