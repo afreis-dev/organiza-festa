@@ -60,14 +60,8 @@ def salvar_eventos(lista_de_eventos):
 
     arquivo.close()
 
-def main():
-    # garantir que o arquivo de eventos exista
-    garantir_arquivo_eventos()
-    eventos = carregar_eventos()
-
-main()
-
 def mostrar_eventos(lista_de_eventos):
+    # mostra a lista de eventos no terminal
     print("\n=== LISTA DE EVENTOS ===")
     if len(lista_de_eventos) == 0:
         print("(sem eventos cadastrados)")
@@ -80,3 +74,26 @@ def mostrar_eventos(lista_de_eventos):
         e = lista_de_eventos[indice]
         print(e["id"].rjust(2), "|", e["data"].ljust(10), "|", e["nome"])
         indice = indice + 1
+
+def mostrar_menu():
+    # mostra o menu principal
+    print("\n=== Organiza Festa — Eventos ===")
+    print("[1] Listar eventos")
+    print("[2] Criar evento")
+    print("[3] Editar evento")
+    print("[4] Excluir evento")
+    print("[0] Sair")
+
+def main():
+    # garantir que o arquivo de eventos exista
+    garantir_arquivo_eventos()
+    eventos = carregar_eventos()
+    
+    while True:
+        mostrar_menu()
+        opcao_escolhida = input("> ").strip()
+
+        if opcao_escolhida == "1":
+            mostrar_eventos(eventos)
+
+main()
