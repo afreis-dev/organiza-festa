@@ -60,6 +60,26 @@ def salvar_eventos(lista_de_eventos):
 
     arquivo.close()
 
+def gerar_novo_id(lista_de_eventos):
+    # essa função recebe a lista de eventos e retorna um novo id único (string)
+    if len(lista_de_eventos) == 0:
+        return "1"
+
+    maior_id_encontrado = 0
+    indice = 0
+    while indice < len(lista_de_eventos):
+        try:
+            valor_atual = int(lista_de_eventos[indice]["id"])
+            if valor_atual > maior_id_encontrado:
+                maior_id_encontrado = valor_atual
+        except:
+            # se algum id estiver estranho, ignora
+            pass
+        indice = indice + 1
+
+    proximo_id = maior_id_encontrado + 1
+    return str(proximo_id)
+
 def ler_numero_inteiro(mensagem):
     # lê um número inteiro do usuário, repetindo a pergunta até que o valor seja válido
     while True:
