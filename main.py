@@ -66,3 +66,17 @@ def main():
     eventos = carregar_eventos()
 
 main()
+
+def mostrar_eventos(lista_de_eventos):
+    print("\n=== LISTA DE EVENTOS ===")
+    if len(lista_de_eventos) == 0:
+        print("(sem eventos cadastrados)")
+        return
+
+    print("ID | Data       | Nome")
+    print("-------------------------------")
+    indice = 0
+    while indice < len(lista_de_eventos):
+        e = lista_de_eventos[indice]
+        print(e["id"].rjust(2), "|", e["data"].ljust(10), "|", e["nome"])
+        indice = indice + 1
