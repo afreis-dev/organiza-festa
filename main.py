@@ -60,9 +60,59 @@ def salvar_eventos(lista_de_eventos):
 
     arquivo.close()
 
+def ler_numero_inteiro(mensagem):
+    # lê um número inteiro do usuário, repetindo a pergunta até que o valor seja válido
+    while True:
+        texto = input(mensagem).strip()
+        if texto.isdigit():
+            return int(texto)
+        print(">> Digite um número inteiro válido.")
+
+def ler_numero_decimal(mensagem):
+    # lê um número decimal do usuário, repetindo a pergunta até que o valor seja válido
+    while True:
+        texto = input(mensagem).strip()
+        texto = texto.replace(",", ".")
+        try:
+            valor = float(texto)
+            return valor
+        except:
+            print(">> Digite um número válido (ex.: 1500 ou 1500,00).")
+
+def mostrar_eventos(lista_de_eventos):
+    # mostra a lista de eventos no terminal
+    print("\n=== LISTA DE EVENTOS ===")
+    if len(lista_de_eventos) == 0:
+        print("(sem eventos cadastrados)")
+        return
+
+    print("ID | Data       | Nome")
+    print("-------------------------------")
+    indice = 0
+    while indice < len(lista_de_eventos):
+        e = lista_de_eventos[indice]
+        print(e["id"].rjust(2), "|", e["data"].ljust(10), "|", e["nome"])
+        indice = indice + 1
+
+def mostrar_menu():
+    # mostra o menu principal
+    print("\n=== Organiza Festa — Eventos ===")
+    print("[1] Listar eventos")
+    print("[2] Criar evento")
+    print("[3] Editar evento")
+    print("[4] Excluir evento")
+    print("[0] Sair")
+
 def main():
-    # garantir que o arquivo de eventos exista
+    # garantir que o arquivo de eventos existe e ponto de entrada do programa
     garantir_arquivo_eventos()
     eventos = carregar_eventos()
+
+    while True:
+        mostrar_menu()
+        opcao_escolhida = input("> ").strip()
+
+        if opcao_escolhida == "1":
+            mostrar_eventos(eventos)
 
 main()
