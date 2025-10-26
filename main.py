@@ -253,4 +253,8 @@ def main():
             editar_evento(eventos)
             eventos = carregar_eventos()
 
+        elif opcao_escolhida == "4":
+            excluir_evento(eventos)
+            eventos = carregar_eventos()
+
 main()
