@@ -158,10 +158,16 @@ def main():
     eventos = carregar_eventos()
 
     while True:
+        # mostra o menu e lê a opção do usuário
         mostrar_menu()
         opcao_escolhida = input("> ").strip()
 
         if opcao_escolhida == "1":
             mostrar_eventos(eventos)
+            
+        elif opcao_escolhida == "2":
+            criar_evento(eventos)
+            # recarrega do CSV para manter sincronizado (didático)
+            eventos = carregar_eventos()
 
 main()
