@@ -220,4 +220,8 @@ def main():
             # recarrega do CSV para manter sincronizado (didático)
             eventos = carregar_eventos()
 
+        elif opcao_escolhida == "3":
+            editar_evento(eventos)
+            eventos = carregar_eventos()
+
 main()
