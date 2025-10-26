@@ -193,6 +193,35 @@ def editar_evento(lista_de_eventos):
     salvar_eventos(lista_de_eventos)
     print(">> Evento atualizado com sucesso!")
 
+def excluir_evento(lista_de_eventos):
+    print("\n--- Excluir Evento ---")
+    mostrar_eventos(lista_de_eventos)
+    id_escolhido = input("\nDigite o ID do evento que deseja excluir: ").strip()
+
+    # montar nova lista sem o evento escolhido
+    nova_lista = []
+    encontrado = False
+    indice = 0
+    while indice < len(lista_de_eventos):
+        if lista_de_eventos[indice]["id"] == id_escolhido:
+            encontrado = True
+            # não adiciona (remove)
+        else:
+            nova_lista.append(lista_de_eventos[indice])
+        indice = indice + 1
+
+    if encontrado:
+        salvar_eventos(nova_lista)
+        print(">> Evento excluído com sucesso!")
+        # atualiza a lista original
+        lista_de_eventos.clear()
+        indice = 0
+        while indice < len(nova_lista):
+            lista_de_eventos.append(nova_lista[indice])
+            indice = indice + 1
+    else:
+        print(">> ID não encontrado. Nada foi excluído.")
+
 def mostrar_menu():
     # mostra o menu principal
     print("\n=== Organiza Festa — Eventos ===")
