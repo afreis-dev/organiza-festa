@@ -152,6 +152,46 @@ def encontrar_evento_por_id(lista_de_eventos, id_buscado):
         indice = indice + 1
     return None
 
+def editar_evento(lista_de_eventos):
+    # função para editar um evento existente
+    print("\n--- Editar Evento ---")
+    mostrar_eventos(lista_de_eventos)
+    id_escolhido = input("\nDigite o ID do evento que deseja editar: ").strip()
+
+    evento = encontrar_evento_por_id(lista_de_eventos, id_escolhido)
+    if evento is None:
+        print(">> ID não encontrado.")
+        return
+
+    print("Deixe em branco para manter o valor atual.")
+    novo_nome = input(f"Nome [{evento['nome']}]: ").strip()
+    novo_tipo = input(f"Tipo [{evento['tipo']}]: ").strip()
+    nova_data = input(f"Data (AAAA-MM-DD) [{evento['data']}]: ").strip()
+    novo_local = input(f"Local [{evento['local']}]: ").strip()
+    novo_orc = input(f"Orçamento total [{evento['orcamento_total']}]: ").strip()
+    novo_conv = input(f"Convidados [{evento['convidados']}]: ").strip()
+
+    if novo_nome != "": evento["nome"] = novo_nome
+    if novo_tipo != "": evento["tipo"] = novo_tipo
+    if nova_data != "": evento["data"] = nova_data
+    if novo_local != "": evento["local"] = novo_local
+
+    if novo_orc != "":
+        novo_orc = novo_orc.replace(",", ".")
+        try:
+            float(novo_orc)
+            evento["orcamento_total"] = novo_orc
+        except:
+            print(">> Orçamento inválido. Mantido o valor anterior.")
+
+    if novo_conv != "":
+        if novo_conv.isdigit():
+            evento["convidados"] = novo_conv
+        else:
+            print(">> Convidados inválido. Mantido o valor anterior.")
+
+    salvar_eventos(lista_de_eventos)
+    print(">> Evento atualizado com sucesso!")
 
 def mostrar_menu():
     # mostra o menu principal
