@@ -143,6 +143,16 @@ def criar_evento(lista_de_eventos):
     salvar_eventos(lista_de_eventos)
     print(">> Evento criado com sucesso!")
 
+def encontrar_evento_por_id(lista_de_eventos, id_buscado):
+    # procura um evento pelo id na lista e retorna o dicionário do evento ou None se não encontrar
+    indice = 0
+    while indice < len(lista_de_eventos):
+        if lista_de_eventos[indice]["id"] == id_buscado:
+            return lista_de_eventos[indice]
+        indice = indice + 1
+    return None
+
+
 def mostrar_menu():
     # mostra o menu principal
     print("\n=== Organiza Festa — Eventos ===")
