@@ -257,4 +257,10 @@ def main():
             excluir_evento(eventos)
             eventos = carregar_eventos()
 
+        elif opcao_escolhida == "0":
+            print("Até mais!")
+            break
+
+        else:
+            print(">> Opção inválida. Tente novamente.")
 main()
