@@ -114,6 +114,35 @@ def mostrar_eventos(lista_de_eventos):
         print(e["id"].rjust(2), "|", e["data"].ljust(10), "|", e["nome"])
         indice = indice + 1
 
+def criar_evento(lista_de_eventos):
+    # função para criar um novo evento
+    print("\n--- Criar Evento ---")
+    nome_evento = input("Nome: ").strip()
+    tipo_evento = input("Tipo (aniversário/casamento/reunião/...): ").strip()
+    data_evento = input("Data (AAAA-MM-DD): ").strip()
+    local_evento = input("Local: ").strip()
+    orcamento_total_evento = ler_numero_decimal("Orçamento total (somente número): R$ ")
+    numero_convidados_evento = ler_numero_inteiro("Número de convidados: ")
+
+    # validação básica dos campos obrigatórios
+    if nome_evento == "" or tipo_evento == "" or data_evento == "" or local_evento == "":
+        print(">> Preencha todos os campos obrigatórios.")
+        return
+
+    novo_evento = {
+        "id": gerar_novo_id(lista_de_eventos),
+        "nome": nome_evento,
+        "tipo": tipo_evento,
+        "data": data_evento,
+        "local": local_evento,
+        "orcamento_total": str(orcamento_total_evento),  # salva como texto
+        "convidados": str(numero_convidados_evento)
+    }
+
+    lista_de_eventos.append(novo_evento)
+    salvar_eventos(lista_de_eventos)
+    print(">> Evento criado com sucesso!")
+
 def mostrar_menu():
     # mostra o menu principal
     print("\n=== Organiza Festa — Eventos ===")
