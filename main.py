@@ -37,3 +37,102 @@ def carregar_eventos():
         indice_linha = indice_linha + 1
 
     return lista_de_eventos
+
+def salvar_eventos(lista_de_eventos):
+    # essa função recebe uma lista de dicionários (eventos) e salva no arquivo eventos.csv
+    arquivo = open(ARQUIVO_EVENTOS, "w", encoding="utf-8")
+    arquivo.write("id,nome,tipo,data,local,orcamento_total,convidados\n")
+
+    indice = 0
+    while indice < len(lista_de_eventos):
+        e = lista_de_eventos[indice]
+        linha = (
+            e["id"] + "," +
+            e["nome"] + "," +
+            e["tipo"] + "," +
+            e["data"] + "," +
+            e["local"] + "," +
+            str(e["orcamento_total"]) + "," +
+            str(e["convidados"]) + "\n"
+        )
+        arquivo.write(linha)
+        indice = indice + 1
+
+    arquivo.close()
+
+def gerar_novo_id(lista_de_eventos):
+    # essa função recebe a lista de eventos e retorna um novo id único (string)
+    if len(lista_de_eventos) == 0:
+        return "1"
+
+    maior_id_encontrado = 0
+    indice = 0
+    while indice < len(lista_de_eventos):
+        try:
+            valor_atual = int(lista_de_eventos[indice]["id"])
+            if valor_atual > maior_id_encontrado:
+                maior_id_encontrado = valor_atual
+        except:
+            # se algum id estiver estranho, ignora
+            pass
+        indice = indice + 1
+
+    proximo_id = maior_id_encontrado + 1
+    return str(proximo_id)
+
+def ler_numero_inteiro(mensagem):
+    # lê um número inteiro do usuário, repetindo a pergunta até que o valor seja válido
+    while True:
+        texto = input(mensagem).strip()
+        if texto.isdigit():
+            return int(texto)
+        print(">> Digite um número inteiro válido.")
+
+def ler_numero_decimal(mensagem):
+    # lê um número decimal do usuário, repetindo a pergunta até que o valor seja válido
+    while True:
+        texto = input(mensagem).strip()
+        texto = texto.replace(",", ".")
+        try:
+            valor = float(texto)
+            return valor
+        except:
+            print(">> Digite um número válido (ex.: 1500 ou 1500,00).")
+
+def mostrar_eventos(lista_de_eventos):
+    # mostra a lista de eventos no terminal
+    print("\n=== LISTA DE EVENTOS ===")
+    if len(lista_de_eventos) == 0:
+        print("(sem eventos cadastrados)")
+        return
+
+    print("ID | Data       | Nome")
+    print("-------------------------------")
+    indice = 0
+    while indice < len(lista_de_eventos):
+        e = lista_de_eventos[indice]
+        print(e["id"].rjust(2), "|", e["data"].ljust(10), "|", e["nome"])
+        indice = indice + 1
+
+def mostrar_menu():
+    # mostra o menu principal
+    print("\n=== Organiza Festa — Eventos ===")
+    print("[1] Listar eventos")
+    print("[2] Criar evento")
+    print("[3] Editar evento")
+    print("[4] Excluir evento")
+    print("[0] Sair")
+
+def main():
+    # garantir que o arquivo de eventos existe e ponto de entrada do programa
+    garantir_arquivo_eventos()
+    eventos = carregar_eventos()
+
+    while True:
+        mostrar_menu()
+        opcao_escolhida = input("> ").strip()
+
+        if opcao_escolhida == "1":
+            mostrar_eventos(eventos)
+
+main()
