@@ -3,7 +3,7 @@
 Eu fiz um mini-tutorial para ajudar vocês a contribuirem com o Git/Github sem bagunçar o repositório principal:
 
 ---
-
+aaa
 ###  1. Faça um Fork do projeto
 1. Vá até o repositório original:  
     [https://github.com/afreis-dev/organiza-festa](https://github.com/afreis-dev/organiza-festa)
