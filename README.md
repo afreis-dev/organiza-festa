@@ -1,169 +1,110 @@
-## Como contribuir com o projeto (via Fork)
+# Organiza Festa
 
-Eu fiz um mini-tutorial para ajudar vocês a contribuirem com o Git/Github sem bagunçar o repositório principal:
+é um aplicativo em Python para organizar eventos de forma simples. O objetivo do projeto é praticar os fundamentos de programação (estruturas de dados básicas, funções, leitura/escrita de arquivos) enquanto a gente usa o Git para colaborar.
 
----
+## O que já tá feito até agora?
+- Cadastro, listagem, edição e exclusão de eventos que estão em `data/eventos.csv`.
+- Menu interativo com validação básica de entradas numéricas.
+- Separação do código em módulos (`main.py`, `menus.py`, `eventos.py`, `storage.py`, `utils.py`) com comentários explicando cada passo que foi dado.
+- Estrutura de pastas criada automaticamente caso ainda não exista.
 
-###  1. Faça um Fork do projeto
-1. Vá até o repositório original:  
-    [https://github.com/afreis-dev/organiza-festa](https://github.com/afreis-dev/organiza-festa)
-2. Clique no botão **Fork** (canto superior direito da tela).
-3. Isso vai criar uma cópia do projeto no **seu perfil** do GitHub.
+## Estrutura do projeto
+- `main.py`: ponto de entrada. basicamente garante que os arquivos existam e inicia o menu principal.
+- `menus.py`: controla o loop do menu e direciona as ações do usuário.
+- `eventos.py`: funções para listar, criar, editar e remover eventos.
+- `storage.py`: leitura e escrita do arquivo CSV que guarda os eventos.
+- `utils.py`: funções auxiliares(helpers) (limpar tela, ler numeros com validacao, pausar a tela).
+- `data/`: pasta onde fica o arquivo `eventos.csv`. Criada automaticamente.
 
----
+## Como preparar o ambiente
+1. Garanta que o Python 3 esteja instalado.
+2. Clone o repositorio principal (vou te botar como colaborador. a gente não vai usar o fork):
+   ```bash
+   git clone https://github.com/afreis-dev/organiza-festa.git
+   cd organiza-festa
+   ```
+3. Rode o programa para testar:
+   ```bash
+   python main.py
+   ```
 
-###  2. Clone o seu Fork
-No terminal, baixe o projeto para o seu computador:
+## Como colaborar (sem fork)
+1. Aceite o convite de colaborador que eu mandei pra vocês.
+2. Antes de comecar uma tarefa, atualize seu repositorio local:
+   ```bash
+   git checkout main
+   git pull origin main
+   ```
+3. Crie uma branch descritiva para a sua tarefa:
+   ```bash
+   git checkout -b feature/nome-da-tarefa
+   ```
+4. Implemente as mudanças e veja se ta rodando de boa localmente (por exemplo, executando `python main.py`).  
+5. Veja o que mudou:
+   ```bash
+   git status
+   ```
+6. Adicione os arquivos relevantes e crie um commit:
+   ```bash
+   git add caminho/do/arquivo.py
+   git commit -m "feat: descricao objetiva da mudanca"
+   ```
+7. Envie a branch para o repositorio principal:
+   ```bash
+   git push origin feature/nome-da-tarefa
+   ```
+8. Abra um Pull Request apontando sua branch para `main`, descrevendo o que foi feito.
+9. Aguarde revisao e, quando aprovado, faça merge (Arthur ou outra pessoa vai fazer).
+10. Depois do merge, volte para a `main`, puxe as novidades e remova a branch local se quiser:
+    ```bash
+    git checkout main
+    git pull origin main
+    git branch -d feature/nome-da-tarefa
+    git push origin --delete feature/nome-da-tarefa
+    ```
 
-```bash
-git clone https://github.com/SEU_USUARIO/organiza-festa.git
-cd organiza-festa
-```
+## Comandos Git e para que servem
+- `git clone URL`: baixa o repositorio remoto para o seu computador.
+- `git status`: mostra arquivos modificados, novos e prontos para commit.
+- `git checkout main`: troca para a branch principal local.
+- `git pull origin main`: traz as atualizações da branch `main` remota e aplica na sua cópia local.
+- `git checkout -b nova-branch`: cria uma branch e muda para ela.
+- `git add arquivo`: prepara o arquivo para entrar no proximo commit.
+- `git add .`: adiciona todas as mudanças do diretório atual (use com atenção pra nao dar errado).
+- `git commit -m "mensagem"`: registra as mudancas marcadas com uma mensagem descritiva.
+- `git log --oneline`: lista o historico de commits de forma resumida.
+- `git push origin nome-da-branch`: envia a branch local para o repositório remoto.
+- `git branch`: lista as branches locais.
+- `git branch -d nome-da-branch`: remove uma branch local que ja foi mesclada.
+- `git push origin --delete nome-da-branch`: apaga a branch no GitHub.
+- `git diff`: mostra as diferenças entre o estado atual e o último commit.
+- `git merge origem`: combina a branch informada com a branch atual (normalmente usado pela pessoa que revisa).
 
----
+## FAQ (perguntas frequentes)
+**Preciso de token ou senha ao usar `git push`?**  
+Sim, o GitHub nao aceita senha simples. Use um token pessoal (PAT) ou configure login pelo VS Code/Git Credential Manager.
 
-###  3. Crie uma branch para sua modificação
-Cada nova funcionalidade ou correção deve ser feita em uma **branch separada**:
+**Com quais arquivos devo me preocupar ao commitar?**  
+Inclua apenas os arquivos que voce alterou e que fazem parte da solucao. Use `git status` antes de cada commit para conferir.
 
-```bash
-git checkout -b feature/nome-da-sua-mudanca
-```
-Exemplo:
-```bash
-git checkout -b feature/criar-crud-eventos
-```
+**O que fazer se o comando `git push` falhar dizendo que minha branch esta atrasada?**  
+Execute `git pull origin main`, resolva possiveis conflitos, crie um novo commit com os ajustes e tente enviar novamente.
 
----
+**Como resolver conflitos de merge?**  
+Abra os arquivos marcados com `<<<<<<<` e escolha a versao correta. Depois remova os marcadores, salve e finalize com `git add` e `git commit`.
 
-###  4. Faça suas alterações
-Edite o código, adicione arquivos ou melhore algo no projeto.
-Quando terminar, salve e crie um commit:
+**Posso editar direto na branch main?**  
+Evite. Trabalhe sempre em uma branch de funcionalidade para manter o historico organizado e facilitar a revisao.
 
-```bash
-git add .
-git commit -m "feat: descrição clara da mudança"
-```
-Exemplo:
-```bash
-git commit -m "feat: adicionar cálculo de contagem regressiva"
-```
+**Como saber no que trabalhar?**  
+Verifique as issues abertas ou manda mensagem no grupo ou no canal do discord para alinhar prioridades antes de criar uma branch.
 
----
+**Encontrei um bug mas nao sei como corrigir agora. O que fazer?**  
+Crie uma issue descrevendo o problema ou mande no discord ou no wpp para que alguem assuma o B.O.
 
-###  5. Envie suas alterações para o seu Fork
-```bash
-git push origin feature/nome-da-sua-mudanca
-```
-
----
-
-###  6. Envie um Pull Request
-1. Vá até o seu repositório no Github (seu fork)
-2. Clique no botão **Compare & pull request**
-3. Verifique se está pedindo para mesclar com o repositório original
-**(afreis/organiza-festa -> main)**
-4. Adicione uma descrição clara do que você fez
-5. Clique em **Create Pull Request**
-
-pronto, agora o dono do projeto (Arthur), vai poder revisar e aceitar a contribuição.
-
----
-
-###  7. Mantenha seu fork atualizado
-Depois que o projeto principal receber novas mudanças, atualize o seu fork:
-
-```bash
-git remote add upstream https://github.com/afreis-dev/organiza-festa.git
-git fetch upstream
-git merge upstream/main
-git push
-```
-
----
-
-##  Perguntas/Dúvidas Frequentes (FAQ)
-
-###  Git e GitHub
-
-**1. Preciso instalar algo pra usar o Git?**  
-sim. baixe e instale o [Git](https://git-scm.com/downloads) no seu computador.  
-depois, reinicie o vscode e abra o terminal.
-
----
-
-**2. Clonei o projeto, mas não vejo nada. O que eu faço?**  
-Verifique se entrou na pasta do projeto:  
-```bash
-cd organiza-festa
-```
-
----
-
-**3. Como faço pra atualizar meu código com o do grupo?**  
-use o comando:
-```bash
-git pull
-```
-isso baixa as alterações mais recentes do GitHub
-
----
-
-**4. Fiz um commit, mas ele não aparece no GitHub. Por quê?**  
-você precisa enviar as mudanças com:
-```bash
-git push
-```
+**Esqueci de criar a branch antes de comecar. E agora?**  
+Crie a branch depois (`git checkout -b feature/minha-tarefa`) e continue nela. Isso automaticamente leva seus arquivos modificados.
 
 ---
 
-**5. o Git pede senha, mas não aceita.**  
-o GitHub não usa mais senha.  
-use o **token pessoal** (PAT) ou faça login pelo **VS Code**
-
----
-
-**6. O que é branch e pra que serve?**  
-é uma "versão paralela" do código onde você pode trabalhar sem afetar o código principal.  
-
-Crie uma nova branch com:
-```bash
-git checkout -b feature/nome-da-branch
-```
-
----
-
-**7. Como eu apago uma branch que não preciso mais?**  
-Local:
-```bash
-git branch -d nome-da-branch
-```
-Remota (no GitHub):
-```bash
-git push origin --delete nome-da-branch
-```
-
----
-
-**8. Deu "merge conflict", o que é isso?**  
-significa que duas pessoas editaram o mesmo trecho de código.
-Abra o arquivo, veja as partes marcadas por ``<<<<<<<`` e escolha qual versão manter.
-
----
-
-**9. Todos do grupo precisam usar Git?**  
-Sim. Cada membro deve fazer commits para mostrar participação individual.
-
----
-
-**10. Posso só mandar o código pra Arthur subir?**  
-pode ué, mas você perde o registro da sua contribuição no histórico do grupo.  
-o ideal é aprender a dar commit e push pelo menos uma vez.
-
----
-
-## Dicas
-* use mensagens de commit curtas e descritivas
-* sempre atualize o seu fork antes de começar uma nova funcionalidade
-* teste seu código antes de enviar o pull request
-
-depois eu termino de fazer o resto do README.md
+Se tiver duvidas novas, adicione-as aqui ou mande pra Arthur pra gente manter o README sempre atualizado.
