@@ -37,3 +37,25 @@ def carregar_eventos():
         indice_linha = indice_linha + 1
 
     return lista_de_eventos
+
+def salvar_eventos(lista_de_eventos):
+    # essa função recebe uma lista de dicionários (eventos) e salva no arquivo eventos.csv
+    arquivo = open(ARQUIVO_EVENTOS, "w", encoding="utf-8")
+    arquivo.write("id,nome,tipo,data,local,orcamento_total,convidados\n")
+
+    indice = 0
+    while indice < len(lista_de_eventos):
+        e = lista_de_eventos[indice]
+        linha = (
+            e["id"] + "," +
+            e["nome"] + "," +
+            e["tipo"] + "," +
+            e["data"] + "," +
+            e["local"] + "," +
+            str(e["orcamento_total"]) + "," +
+            str(e["convidados"]) + "\n"
+        )
+        arquivo.write(linha)
+        indice = indice + 1
+
+    arquivo.close()
