@@ -1,6 +1,7 @@
 """Funcoes auxiliares para entrada de dados e interface."""
 
 import os
+from datetime import date, datetime
 
 
 def limpar_tela():
@@ -30,3 +31,12 @@ def ler_numero_decimal(mensagem):
 def aguardar_enter():
     """Mantem a tela visivel ate o usuario pressionar Enter."""
     input("\nPressione Enter para voltar ao menu...")
+
+
+def dias_ate(data_iso: str) -> int: 
+    try: 
+        date_evento = datetime.strptime(data_iso, "%Y-%m-%d").date()
+        return (date_evento - date.today()).days
+    except:
+        return 0
+    
