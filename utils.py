@@ -33,10 +33,37 @@ def aguardar_enter():
     input("\nPressione Enter para voltar ao menu...")
 
 
-def dias_ate(data_iso: str) -> int: 
+def dias_ate(data_str: str) -> int:
+    """
+    Recebe uma data no formato 'DD/MM/AAAA' e retorna:
+    > 0 -> faltam X dias
+    = 0 -> é hoje
+    < 0 -> já passaram X dias (ai o valor é negativo)
+    """
     try: 
-        date_evento = datetime.strptime(data_iso, "%Y-%m-%d").date()
-        return (date_evento - date.today()).days
+        data_evento = datetime.strptime(data_str, "%d/%m/%Y").date()
+        return (data_evento - date.today()).days
     except:
-        return 0
-    
+        return 0 # se o formato estiver errado, evita erros retornando 0
+
+def descricao_contagem(data_str: str) -> str:
+    """
+    transforma a diferença de dias em uma frase legível.
+    """
+    dias = dias_ate(data_str)
+    if dias > 0:
+        return f"Faltam {dias} dia{'s' if dias > 1 else ''}"
+    elif dias == 0:
+        return "É hoje!"
+    else: return f"Passaram {-dias} dia{'s' if dias < -1 else ''}"
+
+def validar_data(data_str: str) -> bool:
+    """
+    Verifica se a data está no formato 'DD/MM/AAAA' e é uma data válida.
+    Retorna True se for válida, False caso contrário.
+    """
+    try:
+        datetime.strptime(data_str, "%d/%m/%Y")
+        return True
+    except:
+        return False

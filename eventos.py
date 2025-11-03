@@ -1,8 +1,7 @@
 """Funcoes que manipulam os eventos cadastrados no sistema."""
 
 from storage import salvar_eventos
-from utils import ler_numero_inteiro, ler_numero_decimal
-
+from utils import ler_numero_inteiro, ler_numero_decimal, descricao_contagem, validar_data
 
 def gerar_novo_id(lista_de_eventos):
     """Encontra o maior ID atual e devolve o proximo numero como texto."""
@@ -32,13 +31,19 @@ def mostrar_eventos(lista_de_eventos):
         print("(sem eventos cadastrados)")
         return
 
-    print("ID | Data       | Nome")
-    print("-------------------------------")
+    print("ID | Data       | Situação        | Nome")
+    print("------------------------------------------------------")
+
     indice = 0
     while indice < len(lista_de_eventos):
         evento_atual = lista_de_eventos[indice]
         # usamos rjust/ljust para alinhar as colunas sem complicacao
-        print(evento_atual["id"].rjust(2), "|", evento_atual["data"].ljust(10), "|", evento_atual["nome"])
+        situacao = descricao_contagem(evento_atual["data"])
+        print(
+            evento_atual["id"].rjust(2), "|", evento_atual["data"].ljust(10), "|",
+            situacao.ljust(15), "|",
+            evento_atual["nome"]
+            )
         indice = indice + 1
 
 
@@ -49,7 +54,10 @@ def criar_evento(lista_de_eventos):
     # Todos os campos sao lidos como texto primeiro
     nome_evento = input("Nome: ").strip()
     tipo_evento = input("Tipo (aniversario/casamento/reuniao/...): ").strip()
-    data_evento = input("Data (AAAA-MM-DD): ").strip()
+    data_evento = input("Data (DD/MM/AAAA): ").strip()
+    if not validar_data(data_evento):
+        print(">> Data invalida. Use o formato DD/MM/AAAA.")
+        return
     local_evento = input("Local: ").strip()
 
     # Numeros usam helpers para validar os valores
@@ -102,7 +110,7 @@ def editar_evento(lista_de_eventos):
     print("Deixe em branco para manter o valor atual.")
     novo_nome = input(f"Nome [{evento['nome']}]: ").strip()
     novo_tipo = input(f"Tipo [{evento['tipo']}]: ").strip()
-    nova_data = input(f"Data (AAAA-MM-DD) [{evento['data']}]: ").strip()
+    nova_data = input(f"Data (DD/MM/AAAA) [{evento['data']}]: ").strip()
     novo_local = input(f"Local [{evento['local']}]: ").strip()
     novo_orc = input(f"Orcamento total [{evento['orcamento_total']}]: ").strip()
     novo_conv = input(f"Convidados [{evento['convidados']}]: ").strip()
