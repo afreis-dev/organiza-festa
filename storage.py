@@ -1,6 +1,7 @@
 """Leitura e escrita dos arquivos usados pelo aplicativo."""
 
 ARQUIVO_EVENTOS = "data/eventos.csv"
+ARQUIVO_TAREFAS = "data/tarefas.csv"
 
 
 def garantir_pasta_data():
@@ -88,7 +89,25 @@ def salvar_eventos(eventos):
     arquivo.close()
 
 
+def garantir_arquivo_tarefas():
+    """Cria o arquivo data/tarefas.csv caso ele ainda nao exista."""
+    try:
+        arquivo_t = open(ARQUIVO_TAREFAS, "r", encoding="utf-8")
+        arquivo_t.close()
+    except:
+        arquivo_t = open(ARQUIVO_TAREFAS, "w", encoding="utf-8")
+        arquivo_t.write("id, evento_do_id, descricao, custo, status, fornecedor\n")
+        arquivo_t.close()
+
+def carregar_tarefas():
+    """Ler as tarefas do arquivo csv e passar para um dicionario"""
+
+def salvar_tarefas():
+    """Sobrescrever o csv com a lista de tarefas atual"""
+
+
 def garantir_arquivos():
     """Executa as verificacoes necessarias antes de iniciar o programa."""
     garantir_pasta_data()
     garantir_arquivo_eventos()
+    garantir_arquivo_tarefas()
