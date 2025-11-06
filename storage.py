@@ -101,8 +101,31 @@ def garantir_arquivo_tarefas():
 
 def carregar_tarefas():
     """Ler as tarefas do arquivo csv e passar para um dicionario"""
+    lista_de_tarefas = []
+    try:
+        with open(ARQUIVO_TAREFAS, "r", encoding="utf-8") as arquivo:
+            conteudo = arquivo.readlines()
+    except:
+        return [] #retornar uma lista vazia caso nao haja arquivo
+    while True:
+        linha = 1 
+        for linha in conteudo:
+            linha_atual = linha.strip()
+            if linha_atual != "": #ignorar linhas vazias
+                lista_elementos = linha_atual.split(",")
+                tarefas = {
+                    "id": lista_elementos[0],
+                    "evento_do_id": lista_elementos[1],
+                    "descricao": lista_elementos[2],
+                    "custo": lista_elementos[3],
+                    "status": lista_elementos[4],
+                    "fornecedor": lista_elementos[5],
+                }
+                lista_de_tarefas.append(tarefas) #lista de dicionarios
+            linha += 1
+        break
 
-def salvar_tarefas():
+def salvar_tarefas(tarefas):
     """Sobrescrever o csv com a lista de tarefas atual"""
 
 
