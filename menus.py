@@ -11,6 +11,7 @@ def mostrar_menu():
     print("[2] Criar evento")
     print("[3] Editar evento")
     print("[4] Excluir evento")
+    #print("[5] Ver sugestões")
     print("[0] Sair")
 
 
@@ -33,6 +34,8 @@ def menu_principal(eventos):
         elif opcao_escolhida == "4":
             excluir_evento(eventos)
             aguardar_enter()
+        #elif opcao_escolhida == "5":
+            #ainda vou adicionar aq
         elif opcao_escolhida == "0":
             print("Até mais!")
             break
