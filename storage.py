@@ -131,19 +131,19 @@ def salvar_tarefas(tarefas):
         arquivo.write("id, evento_do_id,descricao,custo,status,fornecedor")
         i = 0
         while i < len(tarefas):
-            for tafera in tarefas:
+            for tarefa in tarefas:
                 linha = (
-                    tafera["id"]
+                    tarefa["id"]
                     + ","
-                    + tafera["evento_do_id"]
+                    + tarefa["evento_do_id"]
                     + ","
-                    + tafera["descricao"]
+                    + tarefa["descricao"]
                     + ","
-                    + str(tafera["custo"])
+                    + str(tarefa["custo"])
                     + ","
-                    + tafera["status"]
+                    + tarefa["status"]
                     + ","
-                    + tafera["fornecedor"]
+                    + tarefa["fornecedor"]
                     + "\n"
                 )
                 arquivo.write(linha)
