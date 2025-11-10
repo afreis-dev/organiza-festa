@@ -127,6 +127,27 @@ def carregar_tarefas():
 
 def salvar_tarefas(tarefas):
     """Sobrescrever o csv com a lista de tarefas atual"""
+    with open(ARQUIVO_TAREFAS, "w", encoding ="utf-8") as arquivo:
+        arquivo.write("id, evento_do_id,descricao,custo,status,fornecedor")
+        i = 0
+        while i < len(tarefas):
+            for tafera in tarefas:
+                linha = (
+                    tafera["id"]
+                    + ","
+                    + tafera["evento_do_id"]
+                    + ","
+                    + tafera["descricao"]
+                    + ","
+                    + str(tafera["custo"])
+                    + ","
+                    + tafera["status"]
+                    + ","
+                    + tafera["fornecedor"]
+                    + "\n"
+                )
+                arquivo.write(linha)
+                i += 1
 
 
 def garantir_arquivos():
