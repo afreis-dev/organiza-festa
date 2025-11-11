@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>Organiza Festa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="topo">
+            <h1>🎉 Organiza Festa</h1>
+            <span class="etiqueta">Frontend estático + API nativa Python</span>
+        </header>
+
+        <section class="painel">
+            <h2>Novo evento</h2>
+            <form id="formulario_evento" class="grid">
+                <input name="nome" placeholder="Nome do evento" required>
+                <input name="tipo" placeholder="Tipo (aniversário, casamento...)" required>
+                <input name="data" placeholder="Data (DD/MM/AAAA)" required>
+                <input name="local" placeholder="Local" required>
+                <input name="orcamento_total" placeholder="Orçamento (ex.: 1200.00)" required>
+                <input name="convidados" placeholder="Convidados (número)" required>
+                <button>Criar evento</button>
+            </form>
+            <div id="mensagem_evento" class="mensagem" hidden></div>
+        </section>
+
+        <section id="area_eventos"></section>
+    </div>
+
+    <script>
+        async function carregar_eventos() {
+            const area_eventos = document.getElementById('area_eventos');
+            area_eventos.innerHTML = '';
+
+            const resposta = await fetch('/api/eventos');
+            const lista_eventos = await resposta.json();
+
+            if (!Array.isArray(lista_eventos) || lista_eventos.length === 0) {
+                area_eventos.innerHTML = '<div class="painel"><small>(nenhum evento cadastrado)</small></div>';
+                return;
+            }
+
+            for (const evento of lista_eventos) {
+                const painel_evento = document.createElement('div');
+                painel_evento.className = 'painel';
+                painel_evento.innerHTML = `
+                    <h2>#${evento.id} • ${evento.nome}</h2>
+                    <div class="kpis">
+                        <span>Data: ${evento.data}</span>
+                        <span>Orçamento: ${evento.orcamento_txt}</span>
+                        <span>Gasto: ${evento.gasto_txt}</span>
+                        <span>Saldo: ${evento.saldo_txt}</span>
+                    </div>
+
+                    <form class="grid formulario_tarefa" data-evento-id="${evento.id}">
+                        <input name="descricao" placeholder="Descrição da tarefa" required>
+                        <input name="custo" placeholder="Custo (ex.: 150.00)" required>
+                        <input name="fornecedor" placeholder="Fornecedor (opcional)">
+                        <button>+ Adicionar tarefa</button>
+                    </form>
+                    <div class="mensagem mensagem_tarefa" hidden></div>
+                `;
+                area_eventos.appendChild(painel_evento);
+            }
+
+            // bind de cada formulário de tarefa
+            document.querySelectorAll('.formulario_tarefa').forEach((formulario_tarefa) => {
+                formulario_tarefa.addEventListener('submit', async (evento_submit) => {
+                    evento_submit.preventDefault();
+
+                    const mensagem_tarefa = formulario_tarefa.parentElement.querySelector('.mensagem_tarefa');
+                    mensagem_tarefa.hidden = true;
+
+                    const dados_tarefa = {
+                        evento_id: formulario_tarefa.dataset.eventoId,
+                        descricao: formulario_tarefa.descricao.value,
+                        custo: formulario_tarefa.custo.value,
+                        fornecedor: formulario_tarefa.fornecedor.value
+                    };
+
+                    const resposta = await fetch('/api/tarefas', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(dados_tarefa)
+                    });
+                    const retorno = await resposta.json();
+
+                    if (!resposta.ok) {
+                        mensagem_tarefa.textContent = retorno.erro || 'Erro ao criar tarefa';
+                        mensagem_tarefa.className = 'mensagem erro';
+                        mensagem_tarefa.hidden = false;
+                        return;
+                    }
+
+                    mensagem_tarefa.textContent = 'Tarefa criada!';
+                    mensagem_tarefa.className = 'mensagem ok';
+                    mensagem_tarefa.hidden = false;
+
+                    // atualiza KPIs
+                    carregar_eventos();
+                    formulario_tarefa.reset();
+                    });
+                });
+            }
+
+            // envio do formulário de novo evento
+            document.getElementById('formulario_evento').addEventListener('submit', async (evento_submit) => {
+                evento_submit.preventDefault();
+
+                const formulario_evento = evento_submit.currentTarget;
+                const mensagem_evento = document.getElementById('mensagem_evento');
+                mensagem_evento.hidden = true;
+
+                const dados_evento = Object.fromEntries(new FormData(formulario_evento).entries());
+                const resposta = await fetch('/api/eventos', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(dados_evento)
+                });
+                const retorno = await resposta.json();
+
+                if (!resposta.ok) {
+                    mensagem_evento.textContent = retorno.erro || 'Erro ao criar evento';
+                    mensagem_evento.className = 'mensagem erro';
+                    mensagem_evento.hidden = false;
+                    return;
+                }
+
+                mensagem_evento.textContent = 'Evento criado!';
+                mensagem_evento.className = 'mensagem ok';
+                mensagem_evento.hidden = false;
+
+                formulario_evento.reset();
+                carregar_eventos();
+            });
+
+            // inicialização
+            carregar_eventos();
+        </script>
+</body>
+</html>
