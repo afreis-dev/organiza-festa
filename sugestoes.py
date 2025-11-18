@@ -21,14 +21,14 @@ s_decoracao = {"aniversario": ["balões coloridos", "painel de fotos", "velas pe
                "sao joao": ["bandeirinhas", "fogueira", "balão de são joão", "toalha xadrez", "barracas"],
                "são joão": ["bandeirinhas", "fogueira", "balão de são joão", "toalha xadrez", "barracas"]
               }
-s_diversao = {"aniversario": ["música (DJ, caixa de som...)", ""],
-              "aniversário":["música (DJ, caixa de som...)", ""],
-              "casamento": ["banda ao vivo", ""],
-              "churrasco": [""],
+s_diversao = {"aniversario": ["música (DJ, caixa de som...)", "pula-pula", "futsabao", "maquiagem artistica", "magico" ],
+              "aniversário":["música (DJ, caixa de som...)",  "pula-pula", "futsabao", "maquiagem artistica", "magico"],
+              "casamento": ["banda ao vivo", "dj", "fotografo", "cabine de fotos"],
+              "churrasco": ["banda ao vivo", "karaokê", "beer pong", "futmesa" ],
               "natal": ["amigo secreto", "troca de presentes", "filme de natal"],
-              "festa junina": ["quadrilha", ""],
-              "sao joao": ["quadrilha", ""],
-              "são joão": ["quadrilha", ""]
+              "festa junina": ["quadrilha", "touro mecanico", "tiro ao alvo", "corrida de saco", "pescaria"],
+              "sao joao": ["quadrilha", "touro mecanico", "tiro ao alvo", "corrida de saco", "pescaria"],
+              "são joão": ["quadrilha", "touro mecanico", "tiro ao alvo", "corrida de saco", "pescaria"]
               }
 
 def obter_sugestao(dicionarios_de_sugestoes, tipo_evento):
@@ -80,3 +80,91 @@ def gerar_sugestoes(evento):
         print("Com mais de 20 pessoas, (colocar sugestão).")
     else:
         print("É um evento pequeno. Foque no conforto e em uma boa conversa.")
+
+def pegar_comida_valores():
+    comida_valores = {
+        "kibe": 2.5,
+        "coxinha": 3.0,
+        "pastel": 4.0,
+        "mini sanduíche": 5.0,
+        "cachorro-quente": 6.0,
+        "brigadeiro": 1.5,
+        "bem-casado": 2.0,
+        "beijinho": 1.5,
+        "coqueteis": 15.0,
+        "tábua de frios": 25.0,
+        "vinhos": 40.0,
+        "buffet": 50.0,
+        "doces finos": 30.0,
+        "ilha de sorvete": 20.0,
+        "carne vermelha(maminha, picanha, contra-filé...)": 30.0,
+        "pão de alho": 5.0,
+        "queijo coalho": 7.0,
+        "cerveja": 8.0,
+        "refrigerante": 4.0,
+        "peru": 60.0,
+        "chester": 55.0,
+        "lombo": 50.0,
+        "bacalhau": 70.0,
+        "arroz à grega": 20.0,
+        "salpicão": 25.0,
+        "panetone": 15.0,
+        "pudim": 10.0,
+        "pamonha": 6.0,
+        "milho cozido": 4.0,
+        "milho assado": 5.0,
+        "munguzá": 7.0,
+        "bolo de milho": 8.0,
+        "pé de moleque": 3.0,
+        "paçoca": 2.0,
+        "canjica": 6.0
+    }
+    return comida_valores
+
+def pegar_decoracao_valores():
+    decoracao_valores = {
+        "balões coloridos": 20.0,
+        "painel de fotos": 50.0,
+        "velas personalizadas": 15.0,
+        "chapéus de festa": 10.0,
+        "banner temático": 30.0,
+        "flores brancas": 100.0,
+        "iluminação amarela": 80.0,
+        "arranjos de mesa": 60.0,
+        "tapete vermelho": 150.0,
+        "pisca-pisca": 40.0,
+        "árvore de natal": 120.0,
+        "guirlanda": 35.0,
+        "presépio": 70.0,
+        "bandeirinhas": 25.0,
+        "fogueira": 100.0,
+        "balão de são joão": 30.0,
+        "toalha xadrez": 20.0,
+        "barracas": 150.0
+    }
+    return decoracao_valores
+
+def pegar_entretenimento_valores():
+    entretenimento_valores = {
+        "música (DJ, caixa de som...)": 300.0,
+        "pula-pula": 150.0,
+        "futsabao": 200.0,
+        "maquiagem artistica": 100.0,
+        "magico": 250.0,
+        "banda ao vivo": 500.0,
+        "dj": 350.0,
+        "fotografo": 400.0,
+        "cabine de fotos": 300.0,
+        "karaokê": 150.0,
+        "beer pong": 100.0,
+        "futmesa": 200.0,
+        "amigo secreto": 50.0,
+        "troca de presentes": 75.0,
+        "filme de natal": 80.0,
+        "quadrilha": 250.0,
+        "touro mecanico": 300.0,
+        "tiro ao alvo": 150.0,
+        "corrida de saco": 100.0,
+        "pescaria": 120.0
+    }
+    return entretenimento_valores
