@@ -30,7 +30,10 @@ def obter_sugestao(dicionarios_de_sugestoes, tipo_evento):
 
     if len(opcoes) == 0:
         return "Nenhuma sugestão encontrada para este tipo."
-    return random.choice(opcoes)
+    quantidade= min(2, len(opcoes))
+    escolhidos=random.sample(opcoes, quantidade)
+
+    return ", ".join(escolhidos)
 
 
 def gerar_sugestoes(evento):
