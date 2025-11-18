@@ -3,36 +3,29 @@ from utils import limpar_tela, aguardar_enter
 from eventos import mostrar_eventos, encontrar_evento_por_id
 
 """Funções para gerar sugestões com base no evento"""
-
-s_cardapio = {"aniversario": ["kibe", "coxinha", "pastel", "mini sanduíche", "cachorro-quente", "brigadeiro", "bem-casado", "beijinho"],
-              "aniversário": ["kibe", "coxinha", "pastel", "mini sanduíche", "cachorro-quente", "brigadeiro", "bem-casado", "beijinho"],
-              "casamento": ["coqueteis", "tábua de frios", "vinhos", "buffet", "doces finos", "ilha de sorvete"],
-              "churrasco": ["carne vermelha(maminha, picanha, contra-filé...)", "pão de alho", "queijo coalho", "cerveja", "refrigerante"],
-              "natal": ["peru", "chester", "lombo", "bacalhau", "arroz à grega", "salpicão", "panetone", "pudim"],
-              "festa junina": ["pamonha", "milho cozido", "milho assado", "munguzá", "bolo de milho", "pé de moleque", "paçoca", "canjica"],
-              "sao joao": ["pamonha", "milho cozido", "milho assado", "munguzá", "bolo de milho", "pé de moleque", "paçoca", "canjica"],
-              "são joão": ["pamonha", "milho cozido", "milho assado", "munguzá", "bolo de milho", "pé de moleque", "paçoca", "canjica"]
-              }
-s_decoracao = {"aniversario": ["balões coloridos", "painel de fotos", "velas personalizadas", "chapéus de festa", "banner temático"],
-               "aniversário": ["balões coloridos", "painel de fotos", "velas personalizadas", "chapéus de festa", "banner temático"],
-               "casamento": ["flores brancas", "iluminação amarela", "arranjos de mesa", "tapete vermelho"],
-               "natal": ["pisca-pisca", "árvore de natal", "guirlanda", "presépio"],
-               "festa junina": ["bandeirinhas", "fogueira", "balão de são joão", "toalha xadrez", "barracas"],
-               "sao joao": ["bandeirinhas", "fogueira", "balão de são joão", "toalha xadrez", "barracas"],
-               "são joão": ["bandeirinhas", "fogueira", "balão de são joão", "toalha xadrez", "barracas"]
-              }
-s_diversao = {"aniversario": ["música (DJ, caixa de som...)", "pula-pula", "futsabao", "maquiagem artistica", "magico" ],
-              "aniversário":["música (DJ, caixa de som...)",  "pula-pula", "futsabao", "maquiagem artistica", "magico"],
-              "casamento": ["banda ao vivo", "dj", "fotografo", "cabine de fotos"],
-              "churrasco": ["banda ao vivo", "karaokê", "beer pong", "futmesa" ],
-              "natal": ["amigo secreto", "troca de presentes", "filme de natal"],
-              "festa junina": ["quadrilha", "touro mecanico", "tiro ao alvo", "corrida de saco", "pescaria"],
-              "sao joao": ["quadrilha", "touro mecanico", "tiro ao alvo", "corrida de saco", "pescaria"],
-              "são joão": ["quadrilha", "touro mecanico", "tiro ao alvo", "corrida de saco", "pescaria"]
-              }
+s_cardapio = {
+            1 : ["kibe", "coxinha", "pastel", "mini sanduíche", "cachorro-quente", "brigadeiro", "bem-casado", "beijinho"],
+            2 : ["coqueteis", "tábua de frios", "vinhos", "buffet", "doces finos", "ilha de sorvete"],
+            3 : ["carne vermelha(maminha, picanha, contra-filé...)", "pão de alho", "queijo coalho", "cerveja", "refrigerante"],
+            4 : ["peru", "chester", "lombo", "bacalhau", "arroz à grega", "salpicão", "panetone", "pudim"],
+            5 : ["pamonha", "milho cozido", "milho assado", "munguzá", "bolo de milho", "pé de moleque", "paçoca", "canjica"],
+            }
+s_decoracao = {
+            1 : ["balões coloridos", "painel de fotos", "velas personalizadas", "chapéus de festa", "banner temático"],
+            2 : ["flores brancas", "iluminação amarela", "arranjos de mesa", "tapete vermelho"],
+            4 : ["pisca-pisca", "árvore de natal", "guirlanda", "presépio"],
+            5 : ["bandeirinhas", "fogueira", "balão de são joão", "toalha xadrez", "barracas"],
+            }
+s_diversao = {
+            1 : ["música (DJ, caixa de som...)", "pula-pula", "futsabao", "maquiagem artistica", "magico" ],
+            2 : ["banda ao vivo", "dj", "fotografo", "cabine de fotos"],
+            3 : ["banda ao vivo", "karaokê", "beer pong", "futmesa" ],
+            4 : ["amigo secreto", "troca de presentes", "filme de natal"],
+            5 : ["quadrilha", "touro mecanico", "tiro ao alvo", "corrida de saco", "pescaria"],
+            }
 
 def obter_sugestao(dicionarios_de_sugestoes, tipo_evento):
-    opcoes=dicionarios_de_sugestoes.get(tipo_evento.lower(), [])
+    opcoes=dicionarios_de_sugestoes.get(tipo_evento, [])
 
     if len(opcoes) == 0:
         return "Nenhuma sugestão encontrada para este tipo."

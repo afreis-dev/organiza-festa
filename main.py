@@ -2,6 +2,7 @@
 
 from storage import garantir_arquivos, carregar_eventos
 from menus import menu_principal
+from sugestoes import gerar_sugestoes
 
 
 def main():

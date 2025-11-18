@@ -53,7 +53,7 @@ def criar_evento(lista_de_eventos):
 
     # Todos os campos sao lidos como texto primeiro
     nome_evento = input("Nome: ").strip()
-    tipo_evento = input("Tipo (aniversario/casamento/reuniao/...): ").strip()
+    tipo_evento = int(input("Digite: \n [1] Aniversario\n [2] Casamento\n [3] Churrasco\n [4] Natal\n [5] São João"))
     data_evento = input("Data (DD/MM/AAAA): ").strip()
     if not validar_data(data_evento):
         print(">> Data invalida. Use o formato DD/MM/AAAA.")
