@@ -35,7 +35,7 @@ def obter_sugestao(dicionarios_de_sugestoes, tipo_evento):
 
 def gerar_sugestoes(evento):
     limpar_tela()
-    print(f"=== Sugestões para: {evento['nome']} ===")
+    print(f"\n\n\n=== Sugestões para: {evento['nome']} ===")
     
     tipo = evento["tipo"]
 
@@ -64,10 +64,10 @@ def gerar_sugestoes(evento):
     # Sugestão por quantia de convidados: 
     print("\n💡 Dica pelo Número de Convidados:")
     if convidados > 100:
-        print("Com mais de 100 convidados, considere contratar seguranças.")
+        print("Com mais de 100 convidados, (colocar sugestão).")
     elif convidados > 50:
-        print("Para mais de 50 pessoas, garanta que haja pelo menos 2 banheiros.")
+        print("Para mais de 50 pessoas, (colocar sugestão).")
     elif convidados > 20:
-        print("Com mais de 20 pessoas, um sistema de som (mesmo pequeno) ajuda.")
+        print("Com mais de 20 pessoas, (colocar sugestão).")
     else:
         print("É um evento pequeno. Foque no conforto e em uma boa conversa.")
