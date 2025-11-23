@@ -7,6 +7,7 @@
 - Menu interativo com validação básica de entradas numéricas.
 - Separação do código em módulos (`main.py`, `menus.py`, `eventos.py`, `storage.py`, `utils.py`) com comentários explicando cada passo que foi dado.
 - Estrutura de pastas criada automaticamente caso ainda não exista.
+- Contagem regressiva com formato DD/MM/AAAA
 
 ## Estrutura do projeto
 - `main.py`: ponto de entrada. basicamente garante que os arquivos existam e inicia o menu principal.
