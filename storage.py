@@ -95,7 +95,7 @@ def garantir_arquivo_tarefas():
         arquivo.close()
     except:
         arquivo = open(ARQUIVO_TAREFAS, "w", encoding="utf-8")
-        cabecalho = "id,evento_id,descricao,custo,status,fornecedor\n"
+        cabecalho = "id,evento_id,descricao,quantidade,custo,status,fornecedor\n"
         arquivo.write(cabecalho)
         arquivo.close()
 
@@ -116,13 +116,33 @@ def carregar_tarefas():
         linha_atual = linhas_do_arquivo[indice_linha].strip()
         if linha_atual != "":
             partes = linha_atual.split(",")
+            quantidade = "1"
+            custo = ""
+            status = ""
+            fornecedor = ""
+
+            if len(partes) >= 7:
+                quantidade = partes[3]
+                custo = partes[4]
+                status = partes[5]
+                fornecedor = partes[6]
+            else:
+                # Formato antigo sem coluna de quantidade
+                if len(partes) >= 4:
+                    custo = partes[3]
+                if len(partes) >= 5:
+                    status = partes[4]
+                if len(partes) >= 6:
+                    fornecedor = partes[5]
+
             tarefa = {
                 "id": partes[0],
                 "evento_id": partes[1],
                 "descricao": partes[2],
-                "custo": partes[3],
-                "status": partes[4],
-                "fornecedor": partes[5],
+                "quantidade": quantidade,
+                "custo": custo,
+                "status": status,
+                "fornecedor": fornecedor,
             }
             lista_de_tarefas.append(tarefa)
         indice_linha = indice_linha + 1
@@ -134,7 +154,7 @@ def salvar_tarefas(lista_de_tarefas):
     """Sobrescreve o tarefas.csv com a lista de tarefas mais recente."""
     garantir_pasta_data()
     arquivo = open(ARQUIVO_TAREFAS, "w", encoding="utf-8")
-    arquivo.write("id,evento_id,descricao,custo,status,fornecedor\n")
+    arquivo.write("id,evento_id,descricao,quantidade,custo,status,fornecedor\n")
 
     indice = 0
     while indice < len(lista_de_tarefas):
@@ -145,6 +165,8 @@ def salvar_tarefas(lista_de_tarefas):
             + tarefa_atual["evento_id"]
             + ","
             + tarefa_atual["descricao"]
+            + ","
+            + str(tarefa_atual.get("quantidade", "1"))
             + ","
             + str(tarefa_atual["custo"])
             + ","

@@ -6,6 +6,7 @@ from eventos import (
     editar_evento,
     excluir_evento,
     detalhar_evento_completo,
+    encontrar_evento_por_id,
 )
 from tarefas import (
     listar_tarefas_de_evento,
@@ -118,13 +119,31 @@ def menu_principal(lista_de_eventos, lista_de_tarefas):
             eventos_atualizados = carregar_eventos()
             lista_de_eventos.clear()
             lista_de_eventos.extend(eventos_atualizados)
+            tarefas_atualizadas = carregar_tarefas()
+            lista_de_tarefas.clear()
+            lista_de_tarefas.extend(tarefas_atualizadas)
             aguardar_enter()
 
         elif opcao_escolhida == "5":
-            # escolhe o evento primeiro
+            if len(lista_de_eventos) == 0:
+                print(">> Nenhum evento cadastrado. Crie um evento antes de gerenciar tarefas.")
+                aguardar_enter()
+                continue
+
             mostrar_eventos(lista_de_eventos)
-            id_evento_escolhido = input("\nDigite o ID do evento para gerenciar as tarefas: ").strip()
-            menu_tarefas(lista_de_tarefas, id_evento_escolhido)
+            print("\nDigite 0 para voltar ao menu anterior.")
+
+            while True:
+                id_evento_escolhido = input("\nDigite o ID do evento para gerenciar as tarefas: ").strip()
+                if id_evento_escolhido == "0":
+                    break
+
+                evento_selecionado = encontrar_evento_por_id(lista_de_eventos, id_evento_escolhido)
+                if evento_selecionado is not None:
+                    menu_tarefas(lista_de_tarefas, id_evento_escolhido)
+                    break
+
+                print(">> ID nao encontrado. Tente novamente.")
 
         elif opcao_escolhida == "6":
             detalhar_evento_completo(lista_de_eventos, lista_de_tarefas)

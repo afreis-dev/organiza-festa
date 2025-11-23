@@ -1,6 +1,6 @@
 """Funcoes que manipulam os eventos cadastrados no sistema."""
 
-from storage import salvar_eventos
+from storage import salvar_eventos, carregar_tarefas, salvar_tarefas
 from utils import ler_numero_inteiro, ler_numero_decimal, descricao_contagem, validar_data, formatar_moeda
 from tarefas import total_gasto_no_evento
 
@@ -144,6 +144,24 @@ def editar_evento(lista_de_eventos):
     print(">> Evento atualizado com sucesso!")
 
 
+def remover_tarefas_relacionadas(id_evento):
+    """Remove as tarefas associadas ao evento excluido."""
+    lista_de_tarefas = carregar_tarefas()
+    tarefas_restantes = []
+    quantidade_removida = 0
+
+    for tarefa in lista_de_tarefas:
+        if tarefa["evento_id"] == id_evento:
+            quantidade_removida = quantidade_removida + 1
+        else:
+            tarefas_restantes.append(tarefa)
+
+    if quantidade_removida > 0:
+        salvar_tarefas(tarefas_restantes)
+
+    return quantidade_removida
+
+
 def excluir_evento(lista_de_eventos):
     """Remove um evento da lista a partir do ID informado."""
     print("\n--- Excluir Evento ---")
@@ -164,7 +182,10 @@ def excluir_evento(lista_de_eventos):
 
     if encontrado:
         salvar_eventos(nova_lista)
+        tarefas_removidas = remover_tarefas_relacionadas(id_escolhido)
         print(">> Evento excluido com sucesso!")
+        if tarefas_removidas > 0:
+            print(f">> {tarefas_removidas} tarefa(s) relacionadas tambem foram excluidas.")
 
         # Reaproveitamos o objeto de lista original para manter a referencia em todo o programa
         lista_de_eventos.clear()
