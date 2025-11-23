@@ -173,3 +173,86 @@ def excluir_evento(lista_de_eventos):
             indice = indice + 1
     else:
         print(">> ID nao encontrado. Nada foi excluido.")
+
+
+def sugerir_para_evento(evento):
+    """Gera sugestoes simples com base no tipo e na quantidade de convidados."""
+    tipo = evento["tipo"].lower()
+    try:
+        quantidade_convidados = int(evento["convidados"])
+    except:
+        quantidade_convidados = 0
+
+    # Classifica o porte do evento
+    if quantidade_convidados <= 20:
+        porte = "pequeno"
+    elif quantidade_convidados <= 50:
+        porte = "medio"
+    else:
+        porte = "grande"
+
+    sugestoes = []
+
+    # Sugestoes basicas por tipo de evento
+    if "aniversario" in tipo:
+        sugestoes.append("Fornecedor: confeitaria especializada em bolos personalizados.")
+        sugestoes.append("Decoração: painel com baloes e fotos do aniversariante.")
+        sugestoes.append("Cardapio: salgadinhos variados, cachorro-quente e doces simples.")
+        sugestoes.append("Atividade: brincadeiras, musica animada e espaço para fotos.")
+
+    elif "casamento" in tipo:
+        sugestoes.append("Fornecedor: buffet completo (entrada, prato principal e sobremesa).")
+        sugestoes.append("Decoração: flores, velas e iluminação mais elegante.")
+        sugestoes.append("Cardapio: pratos quentes, opções sem carne e sobremesa refinada.")
+        sugestoes.append("Atividade: pista de dança e playlist definida pelos noivos.")
+
+    elif "churrasco" in tipo:
+        sugestoes.append("Fornecedor: fornecedor de carnes e carvao em quantidade adequada.")
+        sugestoes.append("Decoração: mesas simples, area externa e iluminação aconchegante.")
+        sugestoes.append("Cardapio: carnes variadas, pao de alho, saladas e refrigerantes.")
+        sugestoes.append("Atividade: musica ambiente e jogos de mesa ou cartas.")
+
+    elif "reuniao" in tipo or "corporativo" in tipo:
+        sugestoes.append("Fornecedor: coffee break (cafe, sucos, bolos e salgados).")
+        sugestoes.append("Decoração: ambiente simples, com cadeiras confortaveis e projetor.")
+        sugestoes.append("Cardapio: lanches leves que nao façam muita sujeira.")
+        sugestoes.append("Atividade: intervalo para networking e perguntas.")
+
+    else:
+        sugestoes.append("Fornecedor: pesquise um buffet ou fornecedor especializado no seu tipo de evento.")
+        sugestoes.append("Decoração: escolha um tema simples que represente bem o objetivo do evento.")
+        sugestoes.append("Cardapio: pense em algo que agrade a maioria dos convidados.")
+        sugestoes.append("Atividade: planeje pelo menos uma atividade para quebrar o gelo.")
+
+    # Ajuste basico pelo porte (quantidade de convidados)
+    if porte == "pequeno":
+        sugestoes.append("Como o evento é pequeno, foque em algo mais intimista e personalizado.")
+    elif porte == "medio":
+        sugestoes.append("Com quantidade media de convidados, vale organizar melhor a fila de buffet e assentos.")
+    else:
+        sugestoes.append("Como o evento é grande, considere equipe extra de apoio e controle de entrada.")
+
+    return sugestoes
+
+
+def mostrar_sugestoes_para_evento(lista_de_eventos):
+    """Permite escolher um evento e exibir sugestoes personalizadas para ele."""
+    print("\n--- Sugestoes para evento ---")
+    mostrar_eventos(lista_de_eventos)
+    id_escolhido = input("\nDigite o ID do evento para ver as sugestoes: ").strip()
+
+    evento = encontrar_evento_por_id(lista_de_eventos, id_escolhido)
+    if evento is None:
+        print(">> ID nao encontrado.")
+        return
+
+    sugestoes = sugerir_para_evento(evento)
+
+    print("\n=== SUGESTOES PARA O EVENTO ===")
+    print("Nome: ", evento["nome"])
+    print("Tipo: ", evento["tipo"])
+    print("Convidados:", evento["convidados"])
+    print("----------------------------------------")
+
+    for sugestao in sugestoes:
+        print("-", sugestao)
