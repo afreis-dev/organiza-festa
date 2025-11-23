@@ -5,7 +5,7 @@ from eventos import (
     criar_evento,
     editar_evento,
     excluir_evento,
-    mostrar_sugestoes_para_evento,
+    detalhar_evento_completo,
 )
 from tarefas import (
     listar_tarefas_de_evento,
@@ -91,7 +91,7 @@ def menu_principal(lista_de_eventos, lista_de_tarefas):
         print("[3] Editar evento")
         print("[4] Excluir evento")
         print("[5] Gerenciar tarefas de um evento")
-        print("[6] Ver sugestoes para um evento")
+        print("[6] Detalhar evento (resumo completo)")
         print("[0] Sair")
         opcao_escolhida = input("> ").strip()
 
@@ -127,7 +127,7 @@ def menu_principal(lista_de_eventos, lista_de_tarefas):
             menu_tarefas(lista_de_tarefas, id_evento_escolhido)
 
         elif opcao_escolhida == "6":
-            mostrar_sugestoes_para_evento(lista_de_eventos)
+            detalhar_evento_completo(lista_de_eventos, lista_de_tarefas)
             aguardar_enter()
 
         elif opcao_escolhida == "0":

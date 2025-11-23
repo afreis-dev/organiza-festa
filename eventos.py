@@ -1,7 +1,8 @@
 """Funcoes que manipulam os eventos cadastrados no sistema."""
 
 from storage import salvar_eventos
-from utils import ler_numero_inteiro, ler_numero_decimal, descricao_contagem, validar_data
+from utils import ler_numero_inteiro, ler_numero_decimal, descricao_contagem, validar_data, formatar_moeda
+from tarefas import total_gasto_no_evento
 
 def gerar_novo_id(lista_de_eventos):
     """Encontra o maior ID atual e devolve o proximo numero como texto."""
@@ -228,31 +229,82 @@ def sugerir_para_evento(evento):
     if porte == "pequeno":
         sugestoes.append("Como o evento é pequeno, foque em algo mais intimista e personalizado.")
     elif porte == "medio":
-        sugestoes.append("Com quantidade media de convidados, vale organizar melhor a fila de buffet e assentos.")
+        sugestoes.append("Com quantidade media de convidados, vale organizar a melhor fila de buffet e assentos.")
     else:
         sugestoes.append("Como o evento é grande, considere equipe extra de apoio e controle de entrada.")
 
     return sugestoes
 
 
-def mostrar_sugestoes_para_evento(lista_de_eventos):
-    """Permite escolher um evento e exibir sugestoes personalizadas para ele."""
-    print("\n--- Sugestoes para evento ---")
+def detalhar_evento_completo(lista_de_eventos, lista_de_tarefas):
+    """Mostra um resumo completo do evento: dados, data, orçamento, tarefas e sugestões."""
+    print("\n--- Detalhar evento ---")
     mostrar_eventos(lista_de_eventos)
-    id_escolhido = input("\nDigite o ID do evento para ver as sugestoes: ").strip()
+    id_escolhido = input("\nDigite o ID do evento que deseja ver os detalhes: ").strip()
 
-    evento = encontrar_evento_por_id(lista_de_eventos, id_escolhido)
-    if evento is None:
-        print(">> ID nao encontrado.")
+    evento_encontrado = encontrar_evento_por_id(lista_de_eventos, id_escolhido)
+    if evento_encontrado is None:
+        print(">> ID não encontrado.")
         return
+    
+    nome = evento_encontrado["nome"]
+    tipo = evento_encontrado["tipo"]
+    data = evento_encontrado["data"]
+    local = evento_encontrado["local"]
+    texto_situacao_data = descricao_contagem(data)
 
-    sugestoes = sugerir_para_evento(evento)
+    try:
+        orcamento_total = float(evento_encontrado["orcamento_total"])
+    except:
+        orcamento_total = 0.0
 
-    print("\n=== SUGESTOES PARA O EVENTO ===")
-    print("Nome: ", evento["nome"])
-    print("Tipo: ", evento["tipo"])
-    print("Convidados:", evento["convidados"])
-    print("----------------------------------------")
+    gasto_total = total_gasto_no_evento(lista_de_tarefas, id_escolhido)
+    saldo = orcamento_total - gasto_total
+    
+    if orcamento_total > 0:
+        percentual_gasto = (gasto_total / orcamento_total) * 100
+    else:
+        percentual_gasto = 0.0
 
-    for sugestao in sugestoes:
+    # Tarefas
+    quantidade_pendentes, quantidade_feitas = contar_tarefas_do_evento(lista_de_tarefas, id_escolhido)
+
+    # Sugestoes personalizadas
+    lista_de_sugestoes = sugerir_para_evento(evento_encontrado)
+
+    print("\n=== DETALHES DO EVENTO ===")
+    print("Nome:       ", nome)
+    print("Tipo:       ", tipo)
+    print("Data:       ", data, " | ", texto_situacao_data)
+    print("Local:      ", local)
+    print("------------------------------------------")
+    print("Orcamento:  ", formatar_moeda(orcamento_total))
+    print("Gasto:      ", formatar_moeda(gasto_total), f"({percentual_gasto:.0f}% do orcamento)")
+    print("Saldo:      ", formatar_moeda(saldo))
+
+    if saldo < 0:
+        print("ATENCAO: o evento estourou o orcamento!")
+
+    print("------------------------------------------")
+    print("Tarefas:    ", quantidade_feitas, "feitas /", quantidade_pendentes, "pendentes")
+
+    print("\n=== SUGESTOES PARA ESSE EVENTO ===")
+    for sugestao in lista_de_sugestoes:
         print("-", sugestao)
+
+def contar_tarefas_do_evento(lista_de_tarefas, id_evento):
+    """
+    Conta quantas tarefas do evento estao pendentes e quantas estao feitas.
+    Retorna: (pendentes, feitas)
+    """
+    quantidade_pendentes = 0
+    quantidade_feitas = 0
+
+    for tarefa in lista_de_tarefas:
+        if tarefa["evento_id"] == id_evento:
+            if tarefa["status"] == "feito":
+                quantidade_feitas += 1
+            else:
+                quantidade_pendentes += 1
+
+    return quantidade_pendentes, quantidade_feitas
