@@ -67,3 +67,10 @@ def validar_data(data_str: str) -> bool:
         return True
     except:
         return False
+    
+def formatar_moeda(valor):
+    """Converte numero para texto no formato R$ 0,00."""
+    try:
+        return "R$ " + f"{float(valor):.2f}".replace(".", ",")
+    except:
+        return "R$ 0,00"
