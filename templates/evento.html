@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<div class="grid" style="gap: 16px;">
+    <div class="card">
+        <div class="section-title">
+            <div>
+                <p class="chip" style="margin:0;">{{ evento.tipo }} • {{ evento.data }}</p>
+                <h2 style="margin-top: 8px;">{{ evento.nome }}</h2>
+                <p style="margin-top: 4px;">Local: {{ evento.local }}</p>
+            </div>
+            <div style="text-align: right;">
+                <span class="badge info">{{ contagem }}</span>
+                <form action="{{ url_for('excluir_evento_web', id_evento=evento.id) }}" method="post" onsubmit="return confirm('Excluir evento e todas as tarefas?');" style="margin-top: 8px;">
+                    <button type="submit" class="btn btn-danger">Excluir evento</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="badges" style="margin-top: 10px;">
+            <span class="badge info">Orçamento: <strong>{{ formatar_moeda(orcamento_total) }}</strong></span>
+            <span class="badge">Gasto: <strong>{{ formatar_moeda(gasto_total) }}</strong></span>
+            <span class="badge {{ 'negativo' if saldo < 0 else 'positivo' }}">Saldo: <strong>{{ formatar_moeda(saldo) }}</strong></span>
+            <span class="badge warning">Uso: <strong>{{ '%.0f'|format(percentual_gasto) }}%</strong></span>
+            <span class="badge">Tarefas: <strong>{{ feitas }}</strong> feitas / <strong>{{ pendentes }}</strong> pendentes</span>
+        </div>
+    </div>
+
+    <div class="grid grid-2">
+        <div class="card">
+            <div class="section-title">
+                <h3>Tarefas</h3>
+                <span class="chip">{{ tarefas_do_evento|length }} itens</span>
+            </div>
+            {% if tarefas_do_evento %}
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Descrição</th>
+                                <th>Qtd.</th>
+                                <th>Unitário</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Fornecedor</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tarefa in tarefas_do_evento %}
+                                <tr>
+                                    <td>#{{ tarefa.id }}</td>
+                                    <td>{{ tarefa.descricao }}</td>
+                                    <td>{{ tarefa.quantidade or '1' }}</td>
+                                    <td>{{ formatar_moeda(preco_unitario_tarefa(tarefa)) }}</td>
+                                    <td>{{ formatar_moeda(tarefa.custo) }}</td>
+                                    <td><span class="status {{ tarefa.status }}">{{ tarefa.status }}</span></td>
+                                    <td>{{ tarefa.fornecedor or '—' }}</td>
+                                    <td class="actions">
+                                        {% if tarefa.status != 'feito' %}
+                                            <form action="{{ url_for('marcar_tarefa_feita_web', id_evento=evento.id, id_tarefa=tarefa.id) }}" method="post">
+                                                <button type="submit" class="btn" style="padding:8px 12px;">Marcar feito</button>
+                                            </form>
+                                        {% endif %}
+                                        <form action="{{ url_for('excluir_tarefa_web', id_evento=evento.id, id_tarefa=tarefa.id) }}" method="post" onsubmit="return confirm('Excluir esta tarefa?');">
+                                            <button type="submit" class="btn btn-danger" style="padding:8px 12px;">Excluir</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>Nenhuma tarefa cadastrada para este evento.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h3>Nova tarefa</h3>
+            <form action="{{ url_for('criar_tarefa_web', id_evento=evento.id) }}" method="post" class="grid" style="gap: 12px;">
+                <div>
+                    <label for="descricao">Descrição</label>
+                    <input type="text" id="descricao" name="descricao" placeholder="Buffet, decoração..." required>
+                </div>
+                <div class="grid grid-2" style="gap: 12px;">
+                    <div>
+                        <label for="quantidade">Quantidade</label>
+                        <input type="number" min="1" id="quantidade" name="quantidade" value="1" required>
+                    </div>
+                    <div>
+                        <label for="preco_unitario">Preço unitário</label>
+                        <input type="number" step="0.01" min="0" id="preco_unitario" name="preco_unitario" placeholder="500" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="fornecedor">Fornecedor</label>
+                    <input type="text" id="fornecedor" name="fornecedor" placeholder="Nome do fornecedor">
+                </div>
+                <button type="submit">Adicionar tarefa</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="section-title">
+            <h3>Sugestões personalizadas</h3>
+            <span class="chip">Baseado no tipo e convidados</span>
+        </div>
+        <div class="grid" style="gap: 10px;">
+            {% for sugestao in sugestoes %}
+                <div class="badge" style="background:#0b1221;">{{ sugestao }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
