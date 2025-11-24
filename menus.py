@@ -156,3 +156,4 @@ def menu_principal(lista_de_eventos, lista_de_tarefas):
         else:
             print(">> Opcao invalida. Tente novamente.")
             aguardar_enter()
+ 
