@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organiza Festa</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <div class="logo">OF</div>
+            <div>
+                <div class="chip">Organizador de eventos</div>
+                <h1 style="margin: 6px 0 0; font-size: 20px;">Organiza Festa</h1>
+            </div>
+        </div>
+        <a class="btn btn-secondary" href="{{ url_for('index') }}">Início</a>
+    </header>
+
+    <div class="flash-area">
+        {% with mensagens = get_flashed_messages(with_categories=True) %}
+            {% if mensagens %}
+                {% for categoria, mensagem in mensagens %}
+                    <div class="flash {{ categoria }}">{{ mensagem }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main class="container">
+        {% block conteudo %}{% endblock %}
+    </main>
+</body>
+</html>
