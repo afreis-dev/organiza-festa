@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<section class="grid grid-2">
+    <div class="card">
+        <div class="section-title">
+            <h2>Novo evento</h2>
+            <span class="chip">Crie e acompanhe pelo painel</span>
+        </div>
+        <form action="{{ url_for('criar_evento_web') }}" method="post" class="grid" style="gap: 12px;">
+            <div>
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" placeholder="Aniversário de Fulano, etc..." required>
+            </div>
+            <div>
+                <label for="tipo">Tipo</label>
+                <input type="text" id="tipo" name="tipo" placeholder="Aniversário, Casamento, Reunião, Churrasco" required>
+            </div>
+            <div>
+                <label for="data">Data</label>
+                <input type="text" id="data" name="data" placeholder="DD/MM/AAAA" required>
+            </div>
+            <div>
+                <label for="local">Local</label>
+                <input type="text" id="local" name="local" placeholder="Salão, Casa de Fulano, Praia, etc..." required>
+            </div>
+            <div>
+                <label for="orcamento_total">Orçamento total</label>
+                <input type="number" step="0.01" min="0" id="orcamento_total" name="orcamento_total" placeholder="Ex: 1000(R$)" required>
+            </div>
+            <div>
+                <label for="convidados">Convidados</label>
+                <input type="number" min="0" id="convidados" name="convidados" placeholder="20 Pequeno, 50 Médio, 50+ Grande" required>
+            </div>
+            <button type="submit">Salvar evento</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="section-title">
+            <h2>Eventos cadastrados</h2>
+            <span class="chip">{{ eventos|length }} eventos</span>
+        </div>
+        {% if eventos %}
+            <div class="grid" style="gap: 14px;">
+                {% for evento in eventos %}
+                    <div class="card" style="padding: 16px; background: #0b1221; border: 1px solid var(--border);">
+                        <div class="section-title">
+                            <div>
+                                <h3 style="margin-bottom: 4px;">{{ evento.nome }}</h3>
+                                <p style="margin: 0;">{{ evento.tipo }} — {{ evento.data }}</p>
+                            </div>
+                            <span class="chip">{{ descricao_contagem(evento.data) }}</span>
+                        </div>
+                        <p style="margin-bottom: 10px;">Local: {{ evento.local }}</p>
+                        <div class="badges" style="margin-bottom: 12px;">
+                            <span class="badge info">Orçamento: <strong>{{ formatar_moeda(evento.orcamento_total) }}</strong></span>
+                            <span class="badge">Convidados: <strong>{{ evento.convidados }}</strong></span>
+                        </div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <a class="btn btn-secondary" href="{{ url_for('detalhes_evento', id_evento=evento.id) }}">Ver detalhes</a>
+                            <form action="{{ url_for('excluir_evento_web', id_evento=evento.id) }}" method="post" onsubmit="return confirm('Excluir este evento?');">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhum evento cadastrado ainda. Comece criando um!</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
