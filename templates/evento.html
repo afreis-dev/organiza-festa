@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<section class="cabecalho-evento">
+    <div>
+        <p class="texto-suave">{{ evento.tipo }} • {{ evento.data }} • {{ evento.local }}</p>
+        <h1>{{ evento.nome }}</h1>
+        <p class="texto-suave">{{ resumo.contagem_texto }}</p>
+    </div>
+    <form action="{{ url_for('excluir_evento', id_evento=evento.id) }}" method="POST" onsubmit="return confirm('Deseja excluir este evento?');">
+        <button type="submit" class="botao perigo">Excluir evento</button>
+    </form>
+</section>
+
+<section class="kpis">
+    <div class="kpi">
+        <p class="label">Orçamento total</p>
+        <p class="valor">{{ formatar_moeda(resumo.orcamento_total) }}</p>
+    </div>
+    <div class="kpi">
+        <p class="label">Gasto</p>
+        <p class="valor">{{ formatar_moeda(resumo.gasto_total) }}</p>
+    </div>
+    <div class="kpi">
+        <p class="label">Saldo</p>
+        <p class="valor">{{ formatar_moeda(resumo.saldo) }}</p>
+    </div>
+    <div class="kpi">
+        <p class="label">Uso do orçamento</p>
+        <p class="valor">{{ '%.0f'|format(resumo.percentual_gasto) }}%</p>
+    </div>
+    <div class="kpi">
+        <p class="label">Tarefas</p>
+        <p class="valor">{{ resumo.feitas }} feitas / {{ resumo.pendentes }} pendentes</p>
+    </div>
+</section>
+
+<section class="grid">
+    <div class="card grande">
+        <div class="linha-cabecalho">
+            <h2>Tarefas</h2>
+            <span class="chip">{{ tarefas|length }} itens</span>
+        </div>
+        {% if tarefas %}
+            <div class="tabela">
+                <div class="tabela-cabecalho">
+                    <span>ID</span>
+                    <span>Descrição</span>
+                    <span>Fornecedor</span>
+                    <span>Status</span>
+                    <span>Custo</span>
+                    <span>Ações</span>
+                </div>
+                {% for item in tarefas %}
+                    {% set tarefa = item.dados %}
+                    <div class="tabela-linha">
+                        <span>#{{ tarefa.id }}</span>
+                        <div>
+                            <div>{{ tarefa.descricao }}</div>
+                            <small class="texto-suave">Qtd: {{ item.quantidade }} • Unit: {{ formatar_moeda(item.valor_unitario) }}</small>
+                        </div>
+                        <span>{{ tarefa.fornecedor or '-' }}</span>
+                        <span class="status {{ tarefa.status }}">{{ tarefa.status|capitalize }}</span>
+                        <span>{{ formatar_moeda(tarefa.custo) }}</span>
+                        <div class="acoes-tabela">
+                            {% if tarefa.status != 'feito' %}
+                            <form action="{{ url_for('marcar_tarefa_feita', id_evento=evento.id, id_tarefa=tarefa.id) }}" method="POST">
+                                <button class="botao pequeno" type="submit">Marcar feita</button>
+                            </form>
+                            {% endif %}
+                            <form action="{{ url_for('excluir_tarefa', id_evento=evento.id, id_tarefa=tarefa.id) }}" method="POST" onsubmit="return confirm('Excluir tarefa?');">
+                                <button class="botao pequeno perigo" type="submit">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="texto-suave">Nenhuma tarefa cadastrada ainda.</p>
+        {% endif %}
+    </div>
+
+    <div class="card grande">
+        <h2>Nova tarefa</h2>
+        <form action="{{ url_for('criar_tarefa', id_evento=evento.id) }}" method="POST" class="formulario">
+            <div class="grupo">
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Ex.: Buffet completo" required>
+            </div>
+            <div class="grupo">
+                <label for="custo">Custo total</label>
+                <input type="number" step="0.01" id="custo" name="custo" placeholder="0.00" required>
+            </div>
+            <div class="grupo">
+                <label for="fornecedor">Fornecedor</label>
+                <input type="text" id="fornecedor" name="fornecedor" placeholder="Opcional">
+            </div>
+            <button type="submit" class="botao primario">Adicionar tarefa</button>
+        </form>
+    </div>
+</section>
+
+<section class="card grande">
+    <h2>Sugestões personalizadas</h2>
+    <ul class="lista-sugestoes">
+        {% for item in sugestoes %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

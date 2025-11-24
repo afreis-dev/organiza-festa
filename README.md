@@ -1,111 +1,65 @@
-# Organiza Festa
+# Manual do Usuário - Organiza Festa
 
-é um aplicativo em Python para organizar eventos de forma simples. O objetivo do projeto é praticar os fundamentos de programação (estruturas de dados básicas, funções, leitura/escrita de arquivos) enquanto a gente usa o Git para colaborar.
+## Visão geral
+O Organiza Festa permite planejar eventos e controlar tarefas usando arquivos CSV. A aplicação funciona tanto via terminal (arquivo `main.py`) quanto pela interface web em Flask (arquivo `app.py`). Ambos os modos compartilham a mesma base de dados na pasta `data/`.
 
-## O que já tá feito até agora?
-- Cadastro, listagem, edição e exclusão de eventos que estão em `data/eventos.csv`.
-- Menu interativo com validação básica de entradas numéricas.
-- Separação do código em módulos (`main.py`, `menus.py`, `eventos.py`, `storage.py`, `utils.py`) com comentários explicando cada passo que foi dado.
-- Estrutura de pastas criada automaticamente caso ainda não exista.
-- Contagem regressiva com formato DD/MM/AAAA
+## Pré-requisitos
+- Python 3 instalado.
+- Permissão de escrita na pasta do projeto para gravar os arquivos CSV em `data/`.
 
-## Estrutura do projeto
-- `main.py`: ponto de entrada. basicamente garante que os arquivos existam e inicia o menu principal.
-- `menus.py`: controla o loop do menu e direciona as ações do usuário.
-- `eventos.py`: funções para listar, criar, editar e remover eventos.
-- `storage.py`: leitura e escrita do arquivo CSV que guarda os eventos.
-- `utils.py`: funções auxiliares(helpers) (limpar tela, ler numeros com validacao, pausar a tela).
-- `data/`: pasta onde fica o arquivo `eventos.csv`. Criada automaticamente.
-
-## Como preparar o ambiente
-1. Garanta que o Python 3 esteja instalado.
-2. Clone o repositorio principal (vou te botar como colaborador. a gente não vai usar o fork):
+## Como iniciar a aplicação
+### Versão web (Flask)
+1. Instale dependências padrão do Flask (caso não tenha):
    ```bash
-   git clone https://github.com/afreis-dev/organiza-festa.git
-   cd organiza-festa
+   pip install flask
    ```
-3. Rode o programa para testar:
+2. Inicie o servidor:
+   ```bash
+   python app.py
+   ```
+3. Acesse no navegador: `http://localhost:5000`.
+
+### Versão para terminal
+1. Execute:
    ```bash
    python main.py
    ```
+2. Navegue pelos menus para gerenciar eventos e tarefas pelo console.
 
-## Como colaborar (sem fork)
-1. Aceite o convite de colaborador que eu mandei pra vocês.
-2. Antes de comecar uma tarefa, atualize seu repositorio local:
-   ```bash
-   git checkout main
-   git pull origin main
-   ```
-3. Crie uma branch descritiva para a sua tarefa:
-   ```bash
-   git checkout -b feature/nome-da-tarefa
-   ```
-4. Implemente as mudanças e veja se ta rodando de boa localmente (por exemplo, executando `python main.py`).  
-5. Veja o que mudou:
-   ```bash
-   git status
-   ```
-6. Adicione os arquivos relevantes e crie um commit:
-   ```bash
-   git add caminho/do/arquivo.py
-   git commit -m "feat: descricao objetiva da mudanca"
-   ```
-7. Envie a branch para o repositorio principal:
-   ```bash
-   git push origin feature/nome-da-tarefa
-   ```
-8. Abra um Pull Request apontando sua branch para `main`, descrevendo o que foi feito.
-9. Aguarde revisao e, quando aprovado, faça merge (Arthur ou outra pessoa vai fazer).
-10. Depois do merge, volte para a `main`, puxe as novidades e remova a branch local se quiser:
-    ```bash
-    git checkout main
-    git pull origin main
-    git branch -d feature/nome-da-tarefa
-    git push origin --delete feature/nome-da-tarefa
-    ```
+## Usando a versão web
+### Criar um novo evento
+1. Na página inicial, preencha Nome, Tipo, Data (DD/MM/AAAA), Local, Orçamento total e número de Convidados.
+2. Clique em **Criar evento**. O sistema gera um ID automaticamente e leva você para a página de detalhes.
 
-## Comandos Git e para que servem
-- `git clone URL`: baixa o repositorio remoto para o seu computador.
-- `git status`: mostra arquivos modificados, novos e prontos para commit.
-- `git checkout main`: troca para a branch principal local.
-- `git pull origin main`: traz as atualizações da branch `main` remota e aplica na sua cópia local.
-- `git checkout -b nova-branch`: cria uma branch e muda para ela.
-- `git add arquivo`: prepara o arquivo para entrar no proximo commit.
-- `git add .`: adiciona todas as mudanças do diretório atual (use com atenção pra nao dar errado).
-- `git commit -m "mensagem"`: registra as mudancas marcadas com uma mensagem descritiva.
-- `git log --oneline`: lista o historico de commits de forma resumida.
-- `git push origin nome-da-branch`: envia a branch local para o repositório remoto.
-- `git branch`: lista as branches locais.
-- `git branch -d nome-da-branch`: remove uma branch local que ja foi mesclada.
-- `git push origin --delete nome-da-branch`: apaga a branch no GitHub.
-- `git diff`: mostra as diferenças entre o estado atual e o último commit.
-- `git merge origem`: combina a branch informada com a branch atual (normalmente usado pela pessoa que revisa).
+### Visualizar detalhes do evento
+- A página `/evento/<id>` mostra contagem de dias, orçamento total, gasto acumulado, saldo, percentual de uso e quantidade de tarefas feitas/pendentes.
+- Há uma lista com todas as tarefas vinculadas ao evento.
 
-## FAQ (perguntas frequentes)
-**Preciso de token ou senha ao usar `git push`?**  
-Sim, o GitHub nao aceita senha simples. Use um token pessoal (PAT) ou configure login pelo VS Code/Git Credential Manager.
+### Adicionar tarefa
+1. No formulário de **Nova tarefa**, informe Descrição, Custo total e, opcionalmente, o Fornecedor.
+2. Clique em **Adicionar tarefa** para salvar. O custo entra automaticamente no cálculo do gasto e do saldo do evento.
 
-**Com quais arquivos devo me preocupar ao commitar?**  
-Inclua apenas os arquivos que voce alterou e que fazem parte da solucao. Use `git status` antes de cada commit para conferir.
+### Concluir ou remover tarefa
+- Use **Marcar feita** para definir o status como feito.
+- Use **Excluir** para remover a tarefa definitivamente do CSV.
 
-**O que fazer se o comando `git push` falhar dizendo que minha branch esta atrasada?**  
-Execute `git pull origin main`, resolva possiveis conflitos, crie um novo commit com os ajustes e tente enviar novamente.
+### Excluir evento
+- O botão **Excluir evento** remove o evento e todas as tarefas associadas.
 
-**Como resolver conflitos de merge?**  
-Abra os arquivos marcados com `<<<<<<<` e escolha a versao correta. Depois remova os marcadores, salve e finalize com `git add` e `git commit`.
+## Usando a versão em terminal
+1. Abra o menu principal pelo `main.py`.
+2. Selecione as opções para cadastrar, listar, editar ou excluir eventos.
+3. Dentro de um evento, acesse o menu de tarefas para criar, editar, marcar como feita ou excluir tarefas.
 
-**Posso editar direto na branch main?**  
-Evite. Trabalhe sempre em uma branch de funcionalidade para manter o historico organizado e facilitar a revisao.
+## Estrutura dos dados
+- `data/eventos.csv`: armazena eventos com colunas `id,nome,tipo,data,local,orcamento_total,convidados`.
+- `data/tarefas.csv`: armazena tarefas com colunas `id,evento_id,descricao,quantidade,custo,status,fornecedor`.
 
-**Como saber no que trabalhar?**  
-Verifique as issues abertas ou manda mensagem no grupo ou no canal do discord para alinhar prioridades antes de criar uma branch.
+## Restrições e observações
+- Campos de data devem estar no formato `DD/MM/AAAA`.
+- Valores monetários são salvos como número decimal simples no CSV (ponto ou vírgula são aceitos na interface web).
+- Caracteres de vírgula nos textos são substituídos por `;` para não quebrar o formato dos arquivos CSV.
+- Os arquivos CSV são criados automaticamente se não existirem, mas é necessário ter permissão de gravação na pasta do projeto.
 
-**Encontrei um bug mas nao sei como corrigir agora. O que fazer?**  
-Crie uma issue descrevendo o problema ou mande no discord ou no wpp para que alguem assuma o B.O.
-
-**Esqueci de criar a branch antes de comecar. E agora?**  
-Crie a branch depois (`git checkout -b feature/minha-tarefa`) e continue nela. Isso automaticamente leva seus arquivos modificados.
-
----
-
-Se tiver duvidas novas, adicione-as aqui ou mande pra Arthur pra gente manter o README sempre atualizado.
+## Suporte
+Se encontrar problemas ou desejar novas funcionalidades, registre uma issue no repositório ou entre em contato com a equipe responsável.

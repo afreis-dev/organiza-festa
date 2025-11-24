@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organiza Festa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topo">
+        <div class="logo">🎉 Organiza Festa</div>
+        <nav class="acoes">
+            <a href="{{ url_for('index') }}" class="botao secundario">Início</a>
+        </nav>
+    </header>
+
+    <main class="conteudo">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alertas">
+                    {% for mensagem in messages %}
+                        <div class="alerta">{{ mensagem }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    <footer class="rodape">
+        <p>Organize seus eventos com praticidade. Camada web construída sobre a lógica original em Python/CSV.</p>
+    </footer>
+</body>
+</html>
